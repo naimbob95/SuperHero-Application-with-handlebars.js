@@ -7,6 +7,7 @@
       var $email;
       var $mobileno;
       var $photo;
+      var $roles;
    }
 
    class Contact {
@@ -122,20 +123,21 @@
          } 
       }
 
-      function insertUser($login, $clearpassword, $name, $email) {
+      function insertUser($login, $clearpassword, $name, $email, $roles) {
 
          //hash the password using one way md5 hashing
          $passwordhash = salt($clearpassword);
          try {
             
-            $sql = "INSERT INTO users(login, password, name, email, addeddate) 
-                    VALUES (:login, :password, :name, :email, NOW())";
+            $sql = "INSERT INTO users(login, password, name, email, addeddate, roles) 
+                    VALUES (:login, :password, :name, :email, NOW(), :roles)";
 
             $stmt = $this->db->prepare($sql);  
             $stmt->bindParam("login", $login);
             $stmt->bindParam("password", $passwordhash);
             $stmt->bindParam("name", $name);
             $stmt->bindParam("email", $email);
+            $stmt->bindParam("roles",$roles);
             $stmt->execute();
 
             $dbs = new DbStatus();

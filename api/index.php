@@ -246,6 +246,7 @@
       return $response->withJson($data, 200, JSON_PRETTY_PRINT);
    });
 
+
    /**
      * Public route /registration for member registration
      */
@@ -255,10 +256,13 @@
       $login = $json->login;
       $email = $json->email;
       $clearpassword = $json->password;
+      $roles = $json->roles;
+   
+
 
       //insert user
       $db = getDatabase();
-      $dbs = $db->insertUser($login, $clearpassword, $name, $email);
+      $dbs = $db->insertUser($login, $clearpassword, $name, $email, $roles);
       $db->close();
 
       $data = array(

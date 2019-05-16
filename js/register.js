@@ -8,12 +8,18 @@ $(function(){
       var login = $("#username").val();
 		var email = $("#email").val();
       var password = $("#password").val();
+     var roles ="superhero";
+      
+     
+   
 
 		var obj = new Object();
       obj.name = name;
       obj.login = login;
 		obj.email = email;
-		obj.password = password;
+      obj.password = password;
+     obj.roles = roles;
+ 
 
       // $('#password, #confirm_password').on('keyup', function () {
       //    if ($('#password').val() == $('#confirm_password').val()) {
