@@ -190,8 +190,7 @@ $(function(){
 					  cape: data.cape,
 					  mask: data.mask,
 					  costume: data.costume,
-					  superpower: data.superpower,
-					  status : data.status 
+					  superpower: data.superpower
 				  });
 				$('#divcontent').empty();
 				$('#divcontent').html(applicationsViewFormTemplate).hide().fadeIn(1000);

@@ -18,16 +18,15 @@
             </tr>
          </thead>
          <tbody>
-{{#each contacts}}
+{{#each applications}}
             <tr>
                <td class='index-column'>{{ id }}</td>
                <td><a href="#applications/view/{{id}}">{{name}}</a></td>
-               <td>{{ name }}</td>
-               <td>{{ mask }}</td>
-               <td>{{Cape}}</td>
+               <td>{{cape}}</td>
+               <td>{{mask}}</td>
                <td>{{costume}}</td>
                <td>{{superpower}}</td>
-               <td><span class="label label-primary">{{ addeddate }}</span></td>
+               <td><span class="label label-info">{{ addeddate }}</span></td>
                <td>{{status}}</td>
                <td>
                   <a href="javascript:;">
