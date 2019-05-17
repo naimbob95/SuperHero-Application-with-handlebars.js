@@ -150,13 +150,103 @@ $(function(){
 		$("body").hide();
 		sessionStorage.clear();
 		window.location.href = "http://localhost/superhero/login.html";
-	});	
+	});
+
+
+	var route7 = crossroads.addRoute('/applications', function(){
+
+      $.ajax({
+         type: "GET",
+         url: "http://localhost/superhero/api/applications",
+         dataType: "json",
+         success: function(data){
+				var applicationsTemplate = Handlebars.templates['applications']({"applications": data});
+				$("#divcontent").empty();
+				$("#divcontent").html(applicationsTemplate).hide().fadeIn(1000);
+
+
+				$(".breadcrumb").empty();
+				$(".breadcrumb").append("<li><a href='#home'>Home</a></li>");
+				$(".breadcrumb").append("<li class='active'>Applications</li>");
+
+				$(".navbar-collapse li").removeClass('active');
+			  	$(".navbar-collapse li a[href='#application']").parent().addClass('active');				
+         },
+         error: function() {
+            alert("1 - An error occurred while processing JSON file. MAIN ERROR!!!!");
+         }
+      });
+	});
+
+	var route7 = crossroads.addRoute('/application/addapplications', function(){
+
+		var applicationInsertFormTemplate = Handlebars.templates['applicationinsertform'];
+	 $('#divcontent').empty();
+	 $('#divcontent').html(applicationInsertFormTemplate).hide().fadeIn(1000);
+
+	 $(".breadcrumb").empty();
+	 $(".breadcrumb").append("<li><a href='#home'>Home</a></li>");
+	//  $(".breadcrumb").append("<li><a href='#contacts'>Contacts</a></li>")
+	 $(".breadcrumb").append("<li class='active'>Add Application</li>");
+
+		$("#navbar li").removeClass('active');
+		$("#navbar li a[href='#contacts']").parent().addClass('active');
+ });
 
 	hasher.initialized.add(parseHash); //parse initial hash
 	hasher.changed.add(parseHash); //parse hash changes
 	hasher.init(); //start listening for history change
 
 	////////////////////////////////////////////////////////////////
+
+	$(document).on('submit','#formaddapplication',function(e) {	
+		e.preventDefault();
+		e.stopPropagation();
+
+		var name = $("#name").val();
+		var cape = $("#cape").val();
+		var mask = $("#mask").val();
+		var costume = $("#costume").val();
+		var superpower = $("#superpower").val();
+		var status = "0";
+
+		//validation
+		//return
+
+		var obj = new Object();
+		obj.name = name;
+		obj.cape = cape;
+		obj.mask= mask;
+		obj.costume = costume;
+		obj.superpower= superpower;
+		obj.status = status;
+
+
+      $.ajax({
+         type: "POST",
+         url: "http://localhost/superhero/api/application",
+         dataType: "json",
+         data: JSON.stringify(obj), 
+         success: function(data){   
+
+         	if (data.insertstatus) {
+         		bootbox.alert("application insertion successful!", function(answer) {
+         			//location.href= "/#contacts";  
+         			$("#formaddapplication")[0].reset();	
+         		});         		
+         	} else {
+         		bootbox.alert("Contact insertion failed!\n" + data.error);
+         		$("#formaddapplication")[0].reset();			
+         	}     
+     		},
+         error: function() {
+         	alert("An error occurred while processing JSON file. MAIN ERROR!!!!");
+         }
+      });			
+	});
+
+
+
 
 	$(document).on('submit','#formaddcontact',function(e) {	
 		e.preventDefault();
@@ -197,6 +287,11 @@ $(function(){
       });			
 	});
 
+
+	
+
+
+
 	$(document).on('submit','#formupdatecontact',function(e) {	
 		e.preventDefault();
 		e.stopPropagation();
@@ -235,7 +330,7 @@ $(function(){
 	});	
 
 	//parent followed by the dynamic content
-  	$(document).on("click", "#tbl1 tbody span", function() {
+  	$(document).on("click", "#tbl1 tbody i", function() {
   		//             span    a        td       tr  
     	var parentTR = $(this).parent().parent().parent();
     	var contactid = $(this).data("contactid");

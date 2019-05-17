@@ -366,6 +366,33 @@
                       ->withHeader('Content-type', 'application/json');    
    }); 
 
+    //POST - INSERT CONTACT - secure route - need token
+    $app->post('/application', function($request, $response){
+
+      $ownerlogin = getLoginTokenPayload($request, $response);  
+      
+      //form data
+      $json = json_decode($request->getBody());
+      $name = $json->name;
+      $cape = $json->cape;
+      $mask = $json->mask;
+      $costume = $json->costume;
+      $superpower = $json->superpower;
+      $status = $json->status;
+
+      $db = getDatabase();
+      $dbs = $db->insertApplication($name, $cape, $mask ,$costume, $superpower ,$status, $ownerlogin);
+      $db->close();
+
+      $data = array(
+         "insertstatus" => $dbs->status,
+         "error" => $dbs->error
+      ); 
+
+      return $response->withJson($data, 200)
+                      ->withHeader('Content-type', 'application/json'); 
+   });   
+
    //POST - INSERT CONTACT - secure route - need token
    $app->post('/contacts', function($request, $response){
 
@@ -388,7 +415,38 @@
 
       return $response->withJson($data, 200)
                       ->withHeader('Content-type', 'application/json'); 
-   });   
+   });  
+   
+   //GET - ALL APPLICATIONS
+   $app->get('/application', function($request, $response){
+
+      $ownerlogin = getLoginTokenPayload($request, $response);  
+
+      $db = getDatabase();
+      $data = $db->getAllApplication($ownerlogin);
+      $db->close();
+
+      return $response->withJson($data, 200)
+                      ->withHeader('Content-type', 'application/json');
+   });
+
+   //GET - SINGLE APPLICATION VIA ID
+   $app->get('/application/[{id}]', function($request, $response, $args){
+
+      //get owner login - to prevent rolling no hacking
+      $ownerlogin = getLoginTokenPayload($request, $response);  
+      
+      $id = $args['id'];
+
+      $db = getDatabase();
+      $data = $db->getAllApplication($id, $ownerlogin);
+      $db->close();
+
+      return $response->withJson($data, 200)
+                      ->withHeader('Content-type', 'application/json'); 
+   }); 
+
+
 
    //GET - ALL CONTACTS
    $app->get('/contacts', function($request, $response){

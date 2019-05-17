@@ -20,6 +20,20 @@
       var $status;
    }
 
+   class Application {
+      var $id;
+      var $name;
+      var $cape;
+      var $mask;
+      var $costume;
+      var $superpower;
+      var $ownerlogin;
+      var $status;
+      var $addeddate;
+   }
+
+
+
    class DbStatus {
       var $status;
       var $error;
@@ -227,6 +241,79 @@
             return $dbs;
          }          
       }
+
+      function insertApplication($name, $cape, $mask, $costume, $superpower, $ownerlogin, $status, $addeddate) {
+
+         try {
+            
+            $sql = "INSERT INTO applications(name, cape, mask, costume, superpower, ownerlogin, status, addeddate) 
+                    VALUES (:name, :cape, :mask, :costume, :superpower, :ownerlogin, :status, NOW())";
+
+            $stmt = $this->db->prepare($sql);  
+            $stmt->bindParam("name", $name);
+            $stmt->bindParam("cape", $cape);
+            $stmt->bindParam("mask", $mask);
+            $stmt->bindParam("costume", $costume);
+            $stmt->bindParam("superpower", $superpower);
+            $stmt->bindParam("ownerlogin", $ownerlogin);
+            $stmt->bindParam("status", $status);
+            $stmt->bindParam("addeddate", $addeddate);
+            $stmt->execute();
+
+            $dbs = new DbStatus();
+            $dbs->status = true;
+            $dbs->error = "none";
+            $dbs->lastinsertid = $this->db->lastInsertId();
+
+            return $dbs;
+         }
+         catch(PDOException $e) {
+            $errorMessage = $e->getMessage();
+
+            $dbs = new DbStatus();
+            $dbs->status = false;
+            $dbs->error = $errorMessage;
+
+            return $dbs;
+         }          
+      }
+
+      //get all applications
+      function getAllApplication() {
+         $sql = "SELECT *
+                 FROM applications
+                 ";
+
+         $stmt = $this->db->prepare($sql);
+         // $stmt->bindParam("ownerlogin", $ownerlogin);
+         $stmt->execute(); 
+         $row_count = $stmt->rowCount();
+
+         $data = array();
+
+         if ($row_count)
+         {
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            {
+               $application = new Application();
+               $application->id = $row['id'];
+               $application->name = $row['name'];
+               $application->cape = $row['cape'];
+               $application->mask = $row['mask'];
+               $application->costume = $row['costume'];
+               $application->superhero = $row['status'];
+               $addeddate = $row['addeddate'];
+               $contact->addeddate = time_elapsed_string($addeddate); 
+
+               $contact->status = $row['status'];  
+
+               array_push($data, $contact);
+            }
+         }
+
+         return $data;
+      }
+
 
       //get all contacts
       // function getAllOwnerViaLogin($ownerlogin) {
