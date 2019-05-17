@@ -170,15 +170,46 @@ $(function(){
 				$(".breadcrumb").append("<li class='active'>Applications</li>");
 
 				$(".navbar-collapse li").removeClass('active');
-			  	$(".navbar-collapse li a[href='#application']").parent().addClass('active');				
+			  	$(".navbar-collapse li a[href='#applications']").parent().addClass('active');				
          },
          error: function() {
             alert("1 - An error occurred while processing JSON file. MAIN ERROR!!!!");
          }
       });
 	});
+	var route7b = crossroads.addRoute('/applications/view/{id}', function(id){
 
-	var route7 = crossroads.addRoute('/application/addapplications', function(){
+		$.ajax({
+			type: "GET",
+			url: "http://localhost/superhero/api/applications/" + id,
+			dataType: "json",
+			success: function(data){
+				  var applicationsViewFormTemplate = Handlebars.templates['applicationviewform']({
+					  id: id,
+					  name: data.name,
+					  cape: data.cape,
+					  mask: data.mask,
+					  costume: data.costume,
+					  superpower: data.superpower,
+					  status : data.status 
+				  });
+				$('#divcontent').empty();
+				$('#divcontent').html(applicationsViewFormTemplate).hide().fadeIn(1000);
+	
+				$(".breadcrumb").empty();
+				$(".breadcrumb").append("<li><a href='#home'>Home</a></li>");
+				$(".breadcrumb").append("<li><a href='#contacts'>Contacts</a></li>")
+				$(".breadcrumb").append("<li class='active'>View Contact</li>");
+	
+				  $("#navbar li").removeClass('active');
+				  $("#navbar li a[href='#applications']").parent().addClass('active');	  					   
+			},
+			error: function() {
+				alert("An error occurred while processing JSON file. MAIN ERROR!!!!");
+			}
+		});
+	});
+	var route7c = crossroads.addRoute('/applications/addapplication', function(){
 
 		var applicationInsertFormTemplate = Handlebars.templates['applicationinsertform'];
 	 $('#divcontent').empty();
@@ -190,8 +221,10 @@ $(function(){
 	 $(".breadcrumb").append("<li class='active'>Add Application</li>");
 
 		$("#navbar li").removeClass('active');
-		$("#navbar li a[href='#contacts']").parent().addClass('active');
+		$("#navbar li a[href=#applications]").parent().addClass('active');
  });
+
+
 
 	hasher.initialized.add(parseHash); //parse initial hash
 	hasher.changed.add(parseHash); //parse hash changes

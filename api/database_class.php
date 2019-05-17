@@ -295,19 +295,19 @@
          {
             while($row = $stmt->fetch(PDO::FETCH_ASSOC))
             {
-               $application = new Application();
-               $application->id = $row['id'];
-               $application->name = $row['name'];
-               $application->cape = $row['cape'];
-               $application->mask = $row['mask'];
-               $application->costume = $row['costume'];
-               $application->superhero = $row['status'];
+               $applications = new Application();
+               $applications->id = $row['id'];
+               $applications->name = $row['name'];
+               $applications->cape = $row['cape'];
+               $applications->mask = $row['mask'];
+               $applications->costume = $row['costume'];
+               $applications->superhero = $row['status'];
                $addeddate = $row['addeddate'];
-               $contact->addeddate = time_elapsed_string($addeddate); 
+               $applications->addeddate = time_elapsed_string($addeddate); 
 
-               $contact->status = $row['status'];  
+               $applications->status = $row['status'];  
 
-               array_push($data, $contact);
+               array_push($data, $applications);
             }
          }
 

@@ -418,7 +418,7 @@
    });  
    
    //GET - ALL APPLICATIONS
-   $app->get('/application', function($request, $response){
+   $app->get('/applications', function($request, $response){
 
       $ownerlogin = getLoginTokenPayload($request, $response);  
 
@@ -431,7 +431,7 @@
    });
 
    //GET - SINGLE APPLICATION VIA ID
-   $app->get('/application/[{id}]', function($request, $response, $args){
+   $app->get('/applications/[{id}]', function($request, $response, $args){
 
       //get owner login - to prevent rolling no hacking
       $ownerlogin = getLoginTokenPayload($request, $response);  
