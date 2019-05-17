@@ -5,7 +5,15 @@ $(function(){
   	else {
   		$("body").show();
   		$("#login").html(sessionStorage.login);
-  	}
+	   }
+	  
+	   Handlebars.registerHelper("displaystats", function(stats) {
+		var thestats = (stats);
+		if (thestats === 0)        
+		return "<span style='color: red; font-weight: bold'>disapprove</span>";
+      else if (thestats === 1)        
+         return "<span style='color: green; font-weight: bold'>approve</span>";
+	});	  
 
    $.ajaxSetup({
       statusCode: {
@@ -22,6 +30,11 @@ $(function(){
 	function parseHash(newHash, oldHash){
 	  crossroads.parse(newHash);
 	}
+
+	
+
+	
+	
 
 	var route1 = crossroads.addRoute('', function(){
 
@@ -240,7 +253,7 @@ $(function(){
 		var mask = $("#mask").val();
 		var costume = $("#costume").val();
 		var superpower = $("#superpower").val();
-		var status = "0";
+		
 
 		//validation
 		//return
@@ -251,23 +264,23 @@ $(function(){
 		obj.mask= mask;
 		obj.costume = costume;
 		obj.superpower= superpower;
-		obj.status = status;
+		
 
 
       $.ajax({
          type: "POST",
-         url: "http://localhost/superhero/api/application",
+         url: "http://localhost/superhero/api/applications",
          dataType: "json",
          data: JSON.stringify(obj), 
          success: function(data){   
 
          	if (data.insertstatus) {
-         		bootbox.alert("application insertion successful!", function(answer) {
+         		alert("application insertion successful!", function(answer) {
          			//location.href= "/#contacts";  
          			$("#formaddapplication")[0].reset();	
          		});         		
          	} else {
-         		bootbox.alert("Contact insertion failed!\n" + data.error);
+         		alert("Contact insertion failed!\n" + data.error);
          		$("#formaddapplication")[0].reset();			
          	}     
      		},
@@ -277,7 +290,34 @@ $(function(){
       });			
 	});
 
+	$(document).on("click", "#tbl1 tbody i", function() {
+		//             span    a        td       tr  
+	  var parentTR = $(this).parent().parent().parent();
+	  var applicationsid = $(this).data("applicationid");
 
+	  //*
+	 bootbox.confirm("Are you sure you want to delete the contact?", function(answer) {
+		if (answer) {
+
+			  $.ajax({
+				type: 'DELETE',
+				url: "http://localhost/superhero/api/applications/" + applicationsid,
+				dataType: "json",
+				success: function(data){
+					if (data.deletestatus) {
+					  $(parentTR).fadeOut("slow", "swing", function(){
+						  $(parentTR).remove();
+					  }); 
+					}
+				},
+				error: function() {
+					 alert("An error occurred while processing JSON file.");
+				}
+			  });
+		}
+	  });   
+	  //*/	
+	});
 
 
 	$(document).on('submit','#formaddcontact',function(e) {	
@@ -320,6 +360,35 @@ $(function(){
 	});
 
 
+//parent followed by the dynamic content
+$(document).on("click", "#tbl1 tbody i", function() {
+	//             span    a        td       tr  
+  var parentTR = $(this).parent().parent().parent();
+  var contactid = $(this).data("contactid");
+
+  //*
+ bootbox.confirm("Are you sure you want to delete the contact?", function(answer) {
+	if (answer) {
+
+		  $.ajax({
+			type: 'DELETE',
+			url: "http://localhost/superhero/api/contacts/" + contactid,
+			dataType: "json",
+			success: function(data){
+				if (data.deletestatus) {
+				  $(parentTR).fadeOut("slow", "swing", function(){
+					  $(parentTR).remove();
+				  }); 
+				}
+			},
+			error: function() {
+				 alert("An error occurred while processing JSON file.");
+			}
+		  });
+	}
+  });   
+  //*/	
+});
 	
 
 

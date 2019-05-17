@@ -366,8 +366,8 @@
                       ->withHeader('Content-type', 'application/json');    
    }); 
 
-    //POST - INSERT CONTACT - secure route - need token
-    $app->post('/application', function($request, $response){
+    //POST - INSERT CONTACT - secure route - need token              <------------sini application
+    $app->post('/applications', function($request, $response){
 
       $ownerlogin = getLoginTokenPayload($request, $response);  
       
@@ -378,10 +378,10 @@
       $mask = $json->mask;
       $costume = $json->costume;
       $superpower = $json->superpower;
-      $status = $json->status;
+     
 
       $db = getDatabase();
-      $dbs = $db->insertApplication($name, $cape, $mask ,$costume, $superpower ,$status, $ownerlogin);
+      $dbs = $db->insertApplication($name, $cape, $mask ,$costume, $superpower, $ownerlogin);
       $db->close();
 
       $data = array(
@@ -394,28 +394,7 @@
    });   
 
    //POST - INSERT CONTACT - secure route - need token
-   $app->post('/contacts', function($request, $response){
-
-      $ownerlogin = getLoginTokenPayload($request, $response);  
-      
-      //form data
-      $json = json_decode($request->getBody());
-      $name = $json->name;
-      $email = $json->email;
-      $mobileno = $json->mobileno;
-
-      $db = getDatabase();
-      $dbs = $db->insertContact($name, $email, $mobileno, $ownerlogin);
-      $db->close();
-
-      $data = array(
-         "insertstatus" => $dbs->status,
-         "error" => $dbs->error
-      ); 
-
-      return $response->withJson($data, 200)
-                      ->withHeader('Content-type', 'application/json'); 
-   });  
+    
    
    //GET - ALL APPLICATIONS
    $app->get('/applications', function($request, $response){
@@ -446,6 +425,55 @@
                       ->withHeader('Content-type', 'application/json'); 
    }); 
 
+
+     //DELETE - SINGLE APPLICATION VIA ID
+     $app->delete('/applications/[{id}]', function($request, $response, $args){
+
+      $id = $args['id'];
+
+      $db = getDatabase();
+      $dbs = $db->deleteApplicationViaId($id);
+      $db->close();
+
+      $data = Array(
+         "deletestatus" => $dbs->status,
+         "error" => $dbs->error
+      );
+
+      return $response->withJson($data, 200)
+                      ->withHeader('Content-type', 'application/json');     
+   });
+
+  
+
+
+
+
+
+
+   /////////////////////////////////////////////////////////////////////// <------------sini contact
+   $app->post('/contacts', function($request, $response){
+
+      $ownerlogin = getLoginTokenPayload($request, $response);  
+      
+      //form data
+      $json = json_decode($request->getBody());
+      $name = $json->name;
+      $email = $json->email;
+      $mobileno = $json->mobileno;
+
+      $db = getDatabase();
+      $dbs = $db->insertContact($name, $email, $mobileno, $ownerlogin);
+      $db->close();
+
+      $data = array(
+         "insertstatus" => $dbs->status,
+         "error" => $dbs->error
+      ); 
+
+      return $response->withJson($data, 200)
+                      ->withHeader('Content-type', 'application/json'); 
+   }); 
 
 
    //GET - ALL CONTACTS

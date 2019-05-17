@@ -28,7 +28,7 @@
       var $costume;
       var $superpower;
       var $ownerlogin;
-      var $status;
+      var $stats;
       var $addeddate;
    }
 
@@ -209,45 +209,12 @@
 
       /////////////////////////////////////////////////////////////////////////////////// contacts
 
-      // insert contact
-      function insertContact($name, $email, $mobileno, $ownerlogin) {
+      function insertApplication($name, $cape, $mask, $costume, $superpower, $ownerlogin, $addeddate) {
 
          try {
             
-            $sql = "INSERT INTO contacts(name, email, mobileno, ownerlogin, addeddate) 
-                    VALUES (:name, :email, :mobileno, :ownerlogin, NOW())";
-
-            $stmt = $this->db->prepare($sql);  
-            $stmt->bindParam("name", $name);
-            $stmt->bindParam("email", $email);
-            $stmt->bindParam("mobileno", $mobileno);
-            $stmt->bindParam("ownerlogin", $ownerlogin);
-            $stmt->execute();
-
-            $dbs = new DbStatus();
-            $dbs->status = true;
-            $dbs->error = "none";
-            $dbs->lastinsertid = $this->db->lastInsertId();
-
-            return $dbs;
-         }
-         catch(PDOException $e) {
-            $errorMessage = $e->getMessage();
-
-            $dbs = new DbStatus();
-            $dbs->status = false;
-            $dbs->error = $errorMessage;
-
-            return $dbs;
-         }          
-      }
-
-      function insertApplication($name, $cape, $mask, $costume, $superpower, $ownerlogin, $status, $addeddate) {
-
-         try {
-            
-            $sql = "INSERT INTO applications(name, cape, mask, costume, superpower, ownerlogin, status, addeddate) 
-                    VALUES (:name, :cape, :mask, :costume, :superpower, :ownerlogin, :status, NOW())";
+            $sql = "INSERT INTO applications(name, cape, mask, costume, superpower, ownerlogin, addeddate) 
+                    VALUES (:name, :cape, :mask, :costume, :superpower, :ownerlogin, NOW())";
 
             $stmt = $this->db->prepare($sql);  
             $stmt->bindParam("name", $name);
@@ -256,8 +223,6 @@
             $stmt->bindParam("costume", $costume);
             $stmt->bindParam("superpower", $superpower);
             $stmt->bindParam("ownerlogin", $ownerlogin);
-            $stmt->bindParam("status", $status);
-            $stmt->bindParam("addeddate", $addeddate);
             $stmt->execute();
 
             $dbs = new DbStatus();
@@ -305,7 +270,7 @@
                $addeddate = $row['addeddate'];
                $application->addeddate = time_elapsed_string($addeddate); 
 
-               $application->status = $row['status'];  
+               $application->stats = $row['stats'];  
 
                array_push($data, $application);
             }
@@ -313,6 +278,78 @@
 
          return $data;
       }
+
+      function deleteApplicationViaId($id) {
+
+         $dbstatus = new DbStatus();
+
+         $sql = "DELETE 
+                 FROM applications 
+                 WHERE id = :id";
+
+         try {
+            $stmt = $this->db->prepare($sql); 
+            $stmt->bindParam("id", $id);
+            $stmt->execute();
+
+            $dbstatus->status = true;
+            $dbstatus->error = "none";
+            return $dbstatus;
+         }
+         catch(PDOException $e) {
+            $errorMessage = $e->getMessage();
+
+            $dbstatus->status = false;
+            $dbstatus->error = $errorMessage;
+            return $dbstatus;
+         }           
+      } 
+      
+
+
+
+
+
+
+
+
+
+
+      
+      // insert contact
+      function insertContact($name, $email, $mobileno, $ownerlogin) {
+
+         try {
+            
+            $sql = "INSERT INTO contacts(name, email, mobileno, ownerlogin, addeddate) 
+                    VALUES (:name, :email, :mobileno, :ownerlogin, NOW())";
+
+            $stmt = $this->db->prepare($sql);  
+            $stmt->bindParam("name", $name);
+            $stmt->bindParam("email", $email);
+            $stmt->bindParam("mobileno", $mobileno);
+            $stmt->bindParam("ownerlogin", $ownerlogin);
+            $stmt->execute();
+
+            $dbs = new DbStatus();
+            $dbs->status = true;
+            $dbs->error = "none";
+            $dbs->lastinsertid = $this->db->lastInsertId();
+
+            return $dbs;
+         }
+         catch(PDOException $e) {
+            $errorMessage = $e->getMessage();
+
+            $dbs = new DbStatus();
+            $dbs->status = false;
+            $dbs->error = $errorMessage;
+
+            return $dbs;
+         }          
+      }
+
+      
 
 
       //get all contacts
