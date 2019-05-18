@@ -378,10 +378,11 @@
       $mask = $json->mask;
       $costume = $json->costume;
       $superpower = $json->superpower;
+      $verify = $json->verify;
      
-
+        
       $db = getDatabase();
-      $dbs = $db->insertApplication($name, $cape, $mask ,$costume, $superpower, $ownerlogin);
+      $dbs = $db->insertApplication($name, $cape, $mask ,$costume, $superpower, $verify, $ownerlogin);
       $db->close();
 
       $data = array(
@@ -452,99 +453,99 @@
 
 
    /////////////////////////////////////////////////////////////////////// <------------sini contact
-   $app->post('/contacts', function($request, $response){
+   // $app->post('/contacts', function($request, $response){
 
-      $ownerlogin = getLoginTokenPayload($request, $response);  
+   //    $ownerlogin = getLoginTokenPayload($request, $response);  
       
-      //form data
-      $json = json_decode($request->getBody());
-      $name = $json->name;
-      $email = $json->email;
-      $mobileno = $json->mobileno;
+   //    //form data
+   //    $json = json_decode($request->getBody());
+   //    $name = $json->name;
+   //    $email = $json->email;
+   //    $mobileno = $json->mobileno;
 
-      $db = getDatabase();
-      $dbs = $db->insertContact($name, $email, $mobileno, $ownerlogin);
-      $db->close();
+   //    $db = getDatabase();
+   //    $dbs = $db->insertContact($name, $email, $mobileno, $ownerlogin);
+   //    $db->close();
 
-      $data = array(
-         "insertstatus" => $dbs->status,
-         "error" => $dbs->error
-      ); 
+   //    $data = array(
+   //       "insertstatus" => $dbs->status,
+   //       "error" => $dbs->error
+   //    ); 
 
-      return $response->withJson($data, 200)
-                      ->withHeader('Content-type', 'application/json'); 
-   }); 
+   //    return $response->withJson($data, 200)
+   //                    ->withHeader('Content-type', 'application/json'); 
+   // }); 
 
 
    //GET - ALL CONTACTS
-   $app->get('/contacts', function($request, $response){
+   // $app->get('/contacts', function($request, $response){
 
-      $ownerlogin = getLoginTokenPayload($request, $response);  
+   //    $ownerlogin = getLoginTokenPayload($request, $response);  
 
-      $db = getDatabase();
-      $data = $db->getAllContactsViaLogin($ownerlogin);
-      $db->close();
+   //    $db = getDatabase();
+   //    $data = $db->getAllContactsViaLogin($ownerlogin);
+   //    $db->close();
 
-      return $response->withJson($data, 200)
-                      ->withHeader('Content-type', 'application/json');
-   });
+   //    return $response->withJson($data, 200)
+   //                    ->withHeader('Content-type', 'application/json');
+   // });
 
-   //GET - SINGLE CONTACT VIA ID
-   $app->get('/contacts/[{id}]', function($request, $response, $args){
+   // //GET - SINGLE CONTACT VIA ID
+   // $app->get('/contacts/[{id}]', function($request, $response, $args){
 
-      //get owner login - to prevent rolling no hacking
-      $ownerlogin = getLoginTokenPayload($request, $response);  
+   //    //get owner login - to prevent rolling no hacking
+   //    $ownerlogin = getLoginTokenPayload($request, $response);  
       
-      $id = $args['id'];
+   //    $id = $args['id'];
 
-      $db = getDatabase();
-      $data = $db->getContactViaId($id, $ownerlogin);
-      $db->close();
+   //    $db = getDatabase();
+   //    $data = $db->getContactViaId($id, $ownerlogin);
+   //    $db->close();
 
-      return $response->withJson($data, 200)
-                      ->withHeader('Content-type', 'application/json'); 
-   }); 
+   //    return $response->withJson($data, 200)
+   //                    ->withHeader('Content-type', 'application/json'); 
+   // }); 
 
    //PUT - UPDATE SINGLE CONTACT VIA ID
-   $app->put('/contacts/[{id}]', function($request, $response, $args){
+   // $app->put('/contacts/[{id}]', function($request, $response, $args){
      
-      $id = $args['id'];
+   //    $id = $args['id'];
 
-      //form data
-      $json = json_decode($request->getBody());
-      $name = $json->name;
-      $email = $json->email;
-      $mobileno = $json->mobileno;
+   //    //form data
+   //    $json = json_decode($request->getBody());
+   //    $name = $json->name;
+   //    $email = $json->email;
+   //    $mobileno = $json->mobileno;
 
-      $db = getDatabase();
-      $dbs = $db->updateContactViaId($id, $name, $email, $mobileno);
-      $db->close();
+   //    $db = getDatabase();
+   //    $dbs = $db->updateContactViaId($id, $name, $email, $mobileno);
+   //    $db->close();
 
-      $data = Array(
-         "updatestatus" => $dbs->status,
-         "error" => $dbs->error
-      );
+   //    $data = Array(
+   //       "updatestatus" => $dbs->status,
+   //       "error" => $dbs->error
+   //    );
 
-      return $response->withJson($data, 200)
-                      ->withHeader('Content-type', 'application/json');
-   });
+   //    return $response->withJson($data, 200)
+   //                    ->withHeader('Content-type', 'application/json');
+   // });
 
    //DELETE - SINGLE CONTACT VIA ID
-   $app->delete('/contacts/[{id}]', function($request, $response, $args){
+   // $app->delete('/contacts/[{id}]', function($request, $response, $args){
 
-      $id = $args['id'];
+   //    $id = $args['id'];
 
-      $db = getDatabase();
-      $dbs = $db->deleteContactViaId($id);
-      $db->close();
+   //    $db = getDatabase();
+   //    $dbs = $db->deleteContactViaId($id);
+   //    $db->close();
 
-      $data = Array(
-         "deletestatus" => $dbs->status,
-         "error" => $dbs->error
-      );
+   //    $data = Array(
+   //       "deletestatus" => $dbs->status,
+   //       "error" => $dbs->error
+   //    );
 
-      return $response->withJson($data, 200)
-                      ->withHeader('Content-type', 'application/json');     
-   });
+   //    return $response->withJson($data, 200)
+   //                    ->withHeader('Content-type', 'application/json');     
+   // });
 
    $app->run();
