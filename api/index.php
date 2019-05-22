@@ -511,19 +511,31 @@ $app->get('/admin', function($request, $response){
                    ->withHeader('Content-type', 'application/json');
 
 
-   // $db = getDatabase();
-   // $data = $db->getOwnerApplication($ownerlogin);
-   // $db->close();
-
-   // return $response->withJson($data, 200)
-   //                 ->withHeader('Content-type', 'application/json');
-
-
-
 
 });
 
 
+
+$app->put('/admin/[{id}]', function($request, $response, $args){
+     
+   $id = $args['id'];
+
+   //form data
+   $json = json_decode($request->getBody());
+   $verify = $json->verify;
+
+   $db = getDatabase();
+   $dbs = $db->VerifyViaId($id,$verify);
+   $db->close();
+
+   $data = Array(
+      "updatestatus" => $dbs->status,
+      "error" => $dbs->error
+   );
+
+   return $response->withJson($data, 200)
+                   ->withHeader('Content-type', 'application/json');
+});
 
 
    /////////////////////////////////////////////////////////////////////// <------------sini contact

@@ -216,7 +216,7 @@ $(function(){
 		   url: "http://localhost/superhero/api/admin",
 		   dataType: "json",
 		   success: function(data){
-				  var applicationsTemplate = Handlebars.templates['applications']({"applications": data});
+				  var applicationsTemplate = Handlebars.templates['admin']({"applications": data});
 				  $("#divcontent").empty();
 				  $("#divcontent").html(applicationsTemplate).hide().fadeIn(1000);
   
@@ -332,8 +332,47 @@ $(function(){
 	});	
 
 
-
 	$(document).on("click", "#tbl1 tbody i", function() {
+		//             span    a        td       tr  
+	  var parentTR = $(this).parent().parent().parent();
+	  var applicationid = $(this).data("verifyid");
+	  var verify = 1;
+
+	  var obj = new Object();
+	
+		obj.verify = verify;
+
+	  
+	 bootbox.confirm("Are you sure you want to active the application?", function(answer) {
+		if (answer) {
+		
+			$.ajax({
+				type: "PUT",
+				url: "http://localhost/superhero/api/admin/" + applicationid,
+				dataType: "json",
+				data: JSON.stringify(obj), 
+				success: function(data){   
+	   
+					if (data.updatestatus) {
+						bootbox.alert("Contact update successful!", function(answer) {
+						});         		
+					} else {
+						bootbox.alert("Contact insertion failed!\n" + data.error);		
+					}     
+					},
+				error: function() {
+					alert("An error occurred while processing JSON file. MAIN ERROR!!!!");
+				}
+			 });
+		
+		}
+	  });   
+	  //*/	
+	});
+
+
+
+	$(document).on("click", "#tbl2 tbody i", function() {
 		//             span    a        td       tr  
 	  var parentTR = $(this).parent().parent().parent();
 	  var applicationsid = $(this).data("applicationid");

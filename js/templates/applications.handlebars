@@ -14,7 +14,7 @@
                <th>Superhero Power</th>
                <th>Added</th>
                <th>Status</th>
-               <th>Delete</th>
+               {{!-- <th>Delete</th> --}}
             </tr>
          </thead>
          <tbody>
@@ -29,10 +29,10 @@
                <td><span class="label label-info">{{ addeddate }}</span></td>
            <td>{{{displayverify verify}}}</td>
                  
-                <td><a href="javascript:;">
-                     {{!-- <i class="far fa-trash-alt"></i> --}}
-                  <i class="fa fa-trash" aria-hidden="true"  data-applicationid="{{ id }}"></i></td>
-                     {{!-- <span class="glyphicon glyphicon-trash" aria-hidden="true" data-contactid="{{ id }}"></span> --}}
+                {{!-- <td><a href="javascript:;"> --}}
+                  
+                  {{!-- <i class="fa fa-trash" aria-hidden="true"  data-applicationid="{{ id }}"></i></td> --}}
+                    
          {{/each}} 
          </tbody>
       </table>

@@ -426,6 +426,36 @@
 } 
 
 
+function VerifyViaId($verify) {
+
+   $sql = "UPDATE applications
+           SET verify = :verify
+           WHERE id = :id";
+
+   try {
+      $stmt = $this->db->prepare($sql);  
+      $stmt->bindParam("id", $id);
+      $stmt->bindParam("verify", $verify);
+      $stmt->execute();
+
+      $dbs = new DbStatus();
+      $dbs->status = true;
+      $dbs->error = "none";
+
+      return $dbs;
+   }
+   catch(PDOException $e) {
+      $errorMessage = $e->getMessage();
+
+      $dbs = new DbStatus();
+      $dbs->status = false;
+      $dbs->error = $errorMessage;
+
+      return $dbs;
+   } 
+} 
+
+
       function deleteApplicationViaId($id) {
 
          $dbstatus = new DbStatus();

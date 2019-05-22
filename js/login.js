@@ -24,20 +24,13 @@ $(function(){
             	sessionStorage.token = data.token;
                sessionStorage.login = data.login;
                sessionStorage.roles = data.roles;
-               
-               if(sessionStorage.roles == "superhero")
-               {
-                  console.log(sessionStorage.roles);
-                  window.location.href = "http://localhost/superhero/#contact";
-               }
 
-               if( sessionStorage.roles == "admin")
-                  {
                console.log(sessionStorage.roles);
+               
             	//alert("Login successful!", function() {
-            	window.location.href = "http://localhost/superhero/#profile";
+            	window.location.href = "http://localhost/superhero/#home";
 					//});
-               }
+         
             } 
             else if (data.status == 0) {
             	sessionStorage.clear();
