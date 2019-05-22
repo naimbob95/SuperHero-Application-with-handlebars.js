@@ -4,7 +4,9 @@ $(function(){
   		window.location.href = "http://localhost/superhero/login.html";	
   	else {
   		$("body").show();
-  		$("#login").html(sessionStorage.login);
+		  $("#login").html(sessionStorage.login);
+		  $("#roles").html(sessionStorage.roles);
+		  
 	   }
 	  
 	   Handlebars.registerHelper("displayverify", function(verify) {
@@ -13,6 +15,19 @@ $(function(){
 		return "<span style='color: red; font-weight: bold'>disapprove</span>";
       else if (thestats === 1)        
          return "<span style='color: green; font-weight: bold'>approve</span>";
+	});	  
+
+
+	Handlebars.registerHelper("roleschecker", function(roles) {
+		var roles = sessionStorage.roles;
+		if (roles === "admin")        
+		
+		return "<a href='javascript:;'><i class='fa fa-trash' aria-hidden='true' data-applicationid='{{ id }}'>";
+		
+		
+	  
+		else if (roles === "superhero")        
+		return '';
 	});	  
 
    $.ajaxSetup({
@@ -96,9 +111,6 @@ $(function(){
 					var applicationsViewFormTemplate = Handlebars.templates['applicationviewform']({
 						id: id,
 						name: data.name,
-						cape: data.cape,
-						mask: data.mask,
-						costume: data.costume,
 						superpower: data.superpower
 					});
 				  $('#divcontent').empty();
@@ -222,6 +234,48 @@ $(function(){
          }
       });			
 	});
+
+	$(document).on('submit','#formupdateapplication',function(e) {	
+		e.preventDefault();
+		e.stopPropagation();
+
+		var name = $("#name").val();
+		var cape = $("input[name='cape']:checked").val();
+		var mask = $("input[name='mask']:checked").val();
+		var costume = $("input[name='costume']:checked").val();
+		var superpower = $("#superpower").val();
+
+		//validation
+		//return
+
+		var obj = new Object();
+		obj.name = name;
+		obj.cape = cape;
+		obj.mask = mask;
+		obj.costume = costume;
+		obj.superpower = superpower;
+
+      $.ajax({
+         type: "PUT",
+         url: "http://localhost/superhero/api/application/" + applicationid,
+         dataType: "json",
+         data: JSON.stringify(obj), 
+         success: function(data){   
+
+         	if (data.updatestatus) {
+         		bootbox.alert("Contact update successful!", function(answer) {
+         		});         		
+         	} else {
+         		bootbox.alert("Contact insertion failed!\n" + data.error);		
+         	}     
+     		},
+         error: function() {
+         	alert("An error occurred while processing JSON file. MAIN ERROR!!!!");
+         }
+      });			
+	});	
+
+
 
 	$(document).on("click", "#tbl1 tbody i", function() {
 		//             span    a        td       tr  

@@ -184,7 +184,7 @@
       }
 
       function authenticateUser($login) {
-         $sql = "SELECT login, password as passwordhash
+         $sql = "SELECT login, password as passwordhash, roles
                  FROM users
                  WHERE login = :login";        
 
@@ -200,6 +200,7 @@
                $user = new User();
                $user->login = $row['login'];
                $user->passwordhash = $row['passwordhash'];
+               $user->roles = $row['roles'];
             }
          }
 
@@ -279,6 +280,152 @@
          return $data;
       }
 
+
+      //get all applications
+      function getOwnerApplication($ownerlogin) {
+        
+        if($ownerlogin==="baba"){
+           
+           $sql = "SELECT *
+         FROM applications
+         ";
+
+     $stmt = $this->db->prepare($sql);
+     $stmt->bindParam("ownerlogin", $ownerlogin);
+     $stmt->execute(); 
+     $row_count = $stmt->rowCount();
+
+     $data = array();
+
+     if ($row_count)
+     {
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+        {
+           $application = new Application();
+           $application->id = $row['id'];
+           $application->name = $row['name'];
+           $application->cape = $row['cape'];
+           $application->mask = $row['mask'];
+           $application->costume = $row['costume'];
+           $application->superpower = $row['superpower'];
+           $addeddate = $row['addeddate'];
+           $application->addeddate = time_elapsed_string($addeddate); 
+
+           $application->verify = $row['verify'];  
+
+           array_push($data, $application);
+        }
+     }
+
+     return $data;}
+       
+     else{
+        
+        $sql = "SELECT *
+             FROM applications
+               WHERE ownerlogin = :ownerlogin";
+
+         $stmt = $this->db->prepare($sql);
+         $stmt->bindParam("ownerlogin", $ownerlogin);
+         $stmt->execute(); 
+         $row_count = $stmt->rowCount();
+
+         $data = array();
+
+         if ($row_count)
+         {
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            {
+               $application = new Application();
+               $application->id = $row['id'];
+               $application->name = $row['name'];
+               $application->cape = $row['cape'];
+               $application->mask = $row['mask'];
+               $application->costume = $row['costume'];
+               $application->superpower = $row['superpower'];
+               $addeddate = $row['addeddate'];
+               $application->addeddate = time_elapsed_string($addeddate); 
+
+               $application->verify = $row['verify'];  
+
+               array_push($data, $application);
+            }
+         }
+
+         return $data;
+      }
+      }
+
+      function getOwnerViaId($id, $ownerlogin) {
+         $sql = "SELECT *
+                 FROM contacts
+                 WHERE id = :id
+                 AND ownerlogin = :ownerlogin";
+
+         $stmt = $this->db->prepare($sql);
+         $stmt->bindParam("id", $id);
+         $stmt->bindParam("ownerlogin", $ownerlogin);
+         $stmt->execute(); 
+         $row_count = $stmt->rowCount();
+
+         $contact = new Contact();
+
+         if ($row_count)
+         {
+            while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+            {               
+               $contact->id = $row['id'];
+               $contact->name = $row['name'];
+               $contact->email = $row['email'];
+               $contact->mobileno = $row['mobileno'];
+               $contact->photo = $row['photo'];
+
+               $addeddate = $row['addeddate'];
+               $contact->addeddate = time_elapsed_string($addeddate);  
+            }
+         }
+
+         return $contact;
+      }
+
+ //update contact via id
+ function updateApplicationViaId($name, $cape, $mask, $costume, $superpower) {
+
+   $sql = "UPDATE applications
+           SET name = :name,
+               cape = :cape,
+               mask = :mask,
+               costume = :costume,
+               superpower = :superpower
+           WHERE id = :id";
+
+   try {
+      $stmt = $this->db->prepare($sql);  
+      $stmt->bindParam("id", $id);
+      $stmt->bindParam("cape", $cape);
+      $stmt->bindParam("mask", $mask);
+      $stmt->bindParam("costume",$costume);
+      $stmt->bindParam("superpower", $superpower);
+      $stmt->execute();
+
+      $dbs = new DbStatus();
+      $dbs->status = true;
+      $dbs->error = "none";
+
+      return $dbs;
+   }
+   catch(PDOException $e) {
+      $errorMessage = $e->getMessage();
+
+      $dbs = new DbStatus();
+      $dbs->status = false;
+      $dbs->error = $errorMessage;
+
+      return $dbs;
+   } 
+} 
+
+
       function deleteApplicationViaId($id) {
 
          $dbstatus = new DbStatus();
@@ -316,10 +463,10 @@
 
       
 
-      function getRoles() {
+      function getRoles($ownerlogin) {
          $sql = "SELECT roles
                  FROM users
-                 ";
+                 WHERE name = :ownerlogin";
 
          $stmt = $this->db->prepare($sql);
          // $stmt->bindParam("ownerlogin", $ownerlogin);
@@ -332,7 +479,7 @@
          {
             while($row = $stmt->fetch(PDO::FETCH_ASSOC))
             {
-               $contact = new Contact();
+               $contact = new Application();
                $contact->id = $row['roles'];
               
                array_push($data, $contact);

@@ -48,7 +48,7 @@
       $dbhost="127.0.0.1";
       $dbuser="root";
       $dbpass="";
-      $dbname="contacts";
+      $dbname="superhero";
 
       $db = new Database($dbhost, $dbuser, $dbpass, $dbname);
       return $db;
@@ -352,7 +352,8 @@
             $returndata = array(
                'status' => 1,
                'token' => $token,
-               'login' => $data->login
+               'login' => $data->login,
+               'roles' => $data->roles
             );                
          } else {
             //wrong password
@@ -400,14 +401,31 @@
    //GET - ALL APPLICATIONS
    $app->get('/applications', function($request, $response){
 
-      $ownerlogin = getLoginTokenPayload($request, $response);  
+      $ownerlogin = getLoginTokenPayload($request, $response); 
+    
 
+
+ 
       $db = getDatabase();
-      $data = $db->getAllApplication($ownerlogin);
+      // $data = $db->getAllApplication($ownerlogin);
+      $data = $db-> getOwnerApplication($ownerlogin);
+    
       $db->close();
 
       return $response->withJson($data, 200)
                       ->withHeader('Content-type', 'application/json');
+
+ 
+      // $db = getDatabase();
+      // $data = $db->getOwnerApplication($ownerlogin);
+      // $db->close();
+
+      // return $response->withJson($data, 200)
+      //                 ->withHeader('Content-type', 'application/json');
+
+
+
+
    });
 
    //GET - SINGLE APPLICATION VIA ID
@@ -419,7 +437,7 @@
       $id = $args['id'];
 
       $db = getDatabase();
-      $data = $db->getAllApplication($id, $ownerlogin);
+      $data = $db->getOwnerApplication($id, $ownerlogin);
       $db->close();
 
       return $response->withJson($data, 200)
@@ -445,7 +463,31 @@
                       ->withHeader('Content-type', 'application/json');     
    });
 
-  
+  //PUT - UPDATE SINGLE CONTACT VIA ID
+  $app->put('/applications/[{id}]', function($request, $response, $args){
+     
+   $id = $args['id'];
+
+   //form data
+   $json = json_decode($request->getBody());
+   $name = $json->name;
+   $cape = $json->cape;
+   $mask = $json->mask;
+   $costume = $json->costume;
+   $superpower = $json->superpower;
+
+   $db = getDatabase();
+   $dbs = $db->updateContactViaId($id, $name, $cape, $mask, $superpower);
+   $db->close();
+
+   $data = Array(
+      "updatestatus" => $dbs->status,
+      "error" => $dbs->error
+   );
+
+   return $response->withJson($data, 200)
+                   ->withHeader('Content-type', 'application/json');
+});
 
 
 
