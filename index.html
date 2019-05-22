@@ -39,17 +39,28 @@
                <ul class="nav navbar-nav">
                   <li class="active"><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#home">Home</a></li>
                
-                 <li id="test"></li>
-                  <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#applications">Application</a></li>
-                  <!-- <script>
-                     var roles = "admin";
+                 <li id="application"></li>
+                  <!-- <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#applications">Application</a></li> -->
+                
+                <script>
+
+                      var roles= sessionStorage.roles;
                      
 
-                     if(roles=="admin"){
-                        document.getElementById("test").innerHTML = '<a data-toggle="collapse" data-target=".navbar-collapse.in" href="#contacts">Contacts</a>';
-                         }
+                     if(roles=="admin")
+                     {
+                        document.getElementById("application").innerHTML = '<a data-toggle="collapse" data-target=".navbar-collapse.in" href="#admin">Application</a>';
+                  
+                     }
 
-                  </script>  -->
+                     else
+                     {
+
+                       document.getElementById("application").innerHTML =  '<a data-toggle="collapse" data-target=".navbar-collapse.in" href="#applications">Application</a>';
+
+                     }
+
+                  </script> 
                         
                   
                   <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#about">About</a></li>
@@ -57,7 +68,7 @@
                </ul>
                <ul class="nav navbar-nav navbar-right">   
                   <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="roles" style="color: yellow; font-weight: bold"></span> <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span id="login" style="color: yellow; font-weight: bold"></span> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                       <li><a data-toggle="collapse" data-target=".navbar-collapse.in" href="#profile">Profile</a></li>
                       <li><a href="#logout">Logout</a></li>

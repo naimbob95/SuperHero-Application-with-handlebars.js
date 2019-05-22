@@ -18,17 +18,17 @@ $(function(){
 	});	  
 
 
-	Handlebars.registerHelper("roleschecker", function(roles) {
-		var roles = sessionStorage.roles;
-		if (roles === "admin")        
+	// Handlebars.registerHelper("roleschecker", function(roles) {
+	// 	var roles = sessionStorage.roles;
+	// 	if (roles === "admin")        
 		
-		return "<a href='javascript:;'><i class='fa fa-trash' aria-hidden='true' data-applicationid='{{ id }}'>";
+	// 	return "<a href='javascript:;'><i class='fa fa-trash' aria-hidden='true' data-applicationid='{{ id }}'>";
 		
 		
 	  
-		else if (roles === "superhero")        
-		return '';
-	});	  
+	// 	else if (roles === "superhero")        
+	// 	return '';
+	// });	  
 
    $.ajaxSetup({
       statusCode: {
@@ -143,6 +143,35 @@ $(function(){
 		  $("#navbar li").removeClass('active');
 		  $("#navbar li a[href=#applications]").parent().addClass('active');
    });
+
+
+
+   var route3 = crossroads.addRoute('/applications', function(){
+
+	$.ajax({
+	   type: "GET",
+	   url: "http://localhost/superhero/api/applications",
+	   dataType: "json",
+	   success: function(data){
+			  var applicationsTemplate = Handlebars.templates['applications']({"applications": data});
+			  $("#divcontent").empty();
+			  $("#divcontent").html(applicationsTemplate).hide().fadeIn(1000);
+
+
+			  $(".breadcrumb").empty();
+			  $(".breadcrumb").append("<li><a href='#home'>Home</a></li>");
+			  $(".breadcrumb").append("<li class='active'>Applications</li>");
+
+			  $(".navbar-collapse li").removeClass('active');
+				$(".navbar-collapse li a[href='#applications']").parent().addClass('active');				
+	   },
+	   error: function() {
+		  alert("1 - An error occurred while processing JSON file. MAIN ERROR!!!!");
+	   }
+	});
+  });
+
+  
   
 
 	var route4 = crossroads.addRoute('/about', function(){
@@ -180,6 +209,33 @@ $(function(){
 
 
 	
+	var route7 = crossroads.addRoute('/admin', function(){
+
+		$.ajax({
+		   type: "GET",
+		   url: "http://localhost/superhero/api/admin",
+		   dataType: "json",
+		   success: function(data){
+				  var applicationsTemplate = Handlebars.templates['applications']({"applications": data});
+				  $("#divcontent").empty();
+				  $("#divcontent").html(applicationsTemplate).hide().fadeIn(1000);
+  
+  
+				  $(".breadcrumb").empty();
+				  $(".breadcrumb").append("<li><a href='#home'>Home</a></li>");
+				  $(".breadcrumb").append("<li class='active'>Applications</li>");
+  
+				  $(".navbar-collapse li").removeClass('active');
+					$(".navbar-collapse li a[href='#applications']").parent().addClass('active');				
+		   },
+		   error: function() {
+			  alert("1 - An error occurred while processing JSON file. MAIN ERROR!!!!");
+		   }
+		});
+	  });
+
+
+
 
 
 	hasher.initialized.add(parseHash); //parse initial hash

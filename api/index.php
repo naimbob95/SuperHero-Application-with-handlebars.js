@@ -492,6 +492,38 @@
 
 
 
+///////////////////////////////////////////////////////////////////////////
+
+$app->get('/admin', function($request, $response){
+
+   $ownerlogin = getLoginTokenPayload($request, $response); 
+ 
+
+
+
+   $db = getDatabase();
+   $data = $db->getAllApplication($ownerlogin);
+   // $data = $db-> getOwnerApplication($ownerlogin);
+ 
+   $db->close();
+
+   return $response->withJson($data, 200)
+                   ->withHeader('Content-type', 'application/json');
+
+
+   // $db = getDatabase();
+   // $data = $db->getOwnerApplication($ownerlogin);
+   // $db->close();
+
+   // return $response->withJson($data, 200)
+   //                 ->withHeader('Content-type', 'application/json');
+
+
+
+
+});
+
+
 
 
    /////////////////////////////////////////////////////////////////////// <------------sini contact
