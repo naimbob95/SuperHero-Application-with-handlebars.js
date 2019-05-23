@@ -21,21 +21,20 @@
 {{#each applications}}
             <tr>
                <td class='index-column'>{{ id }}</td>
-               <td>{{name}}</td>
+               <td><a href="#applications/view/{{id}}">{{name}}</a></td>
                <td>{{cape}}</td>
                <td>{{mask}}</td>
                <td>{{costume}}</td>
                <td>{{superpower}}</td>
                <td><span class="label label-info">{{ addeddate }}</span></td>
-           <td>{{{displayverify verify}}}
+           <td>{{{displayverify verify}}} 
                 <a href="javascript:;">
-                  <i class="fa fa-check fa2" aria-hidden="true"  data-verifyid="{{ id }}"></i>
-         
-           </td>
+                  <i class="fa fa-check " aria-hidden="true"  data-verifyid="{{ id }}"></i></td>
+          
 
 
                <td> <a href="javascript:;">
-                  <i class="fa fa-trash" aria-hidden="true"  data-applicationid="{{ id }}"></i>
+                  <i class="fa fa-trash" aria-hidden="true"  data-applicationid="{{ id }}"></i></a></td>
                   
                      
          {{/each}} 

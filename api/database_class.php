@@ -423,7 +423,7 @@
 } 
 
 
-function VerifyViaId($verify) {
+function VerifyViaId($id,$verify) {
 
    $sql = "UPDATE applications
            SET verify = :verify

@@ -278,12 +278,12 @@ $(function(){
          success: function(data){   
 
          	if (data.insertstatus) {
-         		alert("application insertion successful!", function(answer) {
-         			//location.href= "/#contacts";  
+         		alert("Application insertion successful!", function(answer) {
+					 //location.href= "/#contacts"; 
          			$("#formaddapplication")[0].reset();	
          		});         		
          	} else {
-         		alert("application insertion failed!\n" + data.error);
+         		alert("Application insertion failed!\n" + data.error);
          		$("#formaddapplication")[0].reset();			
          	}     
      		},
@@ -322,10 +322,10 @@ $(function(){
          success: function(data){   
 
          	if (data.updatestatus) {
-         		bootbox.alert("Contact update successful!", function(answer) {
+         		bootbox.alert("Applications update successful!", function(answer) {
          		});         		
          	} else {
-         		bootbox.alert("Contact insertion failed!\n" + data.error);		
+         		bootbox.alert("Application insertion failed!\n" + data.error);		
          	}     
      		},
          error: function() {
@@ -335,10 +335,13 @@ $(function(){
 	});	
 
 
+
+	
+
 	$(document).on("click", "#tbl1 tbody i", function() {
 		//             span    a        td       tr  
 	  var parentTR = $(this).parent().parent().parent();
-	  var applicationid = $(this).data("verifyid");
+	  var verifyid = $(this).data("verifyid");
 	  var verify = 1;
 
 	  var obj = new Object();
@@ -351,14 +354,15 @@ $(function(){
 		
 			$.ajax({
 				type: "PUT",
-				url: "http://localhost/superhero/api/admin/" + applicationid,
+				url: "http://localhost/superhero/api/admin/" + verifyid,
 				dataType: "json",
 				data: JSON.stringify(obj), 
 				success: function(data){   
 	   
 					if (data.updatestatus) {
 						bootbox.alert("Contact update successful!", function(answer) {
-						});         		
+						});        
+						window.location.reload(); 		
 					} else {
 						bootbox.alert("Contact insertion failed!\n" + data.error);		
 					}     
@@ -375,6 +379,7 @@ $(function(){
 
 
 
+
 	$(document).on("click", "#tbl2 tbody i", function() {
 		//             span    a        td       tr  
 	  var parentTR = $(this).parent().parent().parent();
@@ -386,7 +391,7 @@ $(function(){
 
 			  $.ajax({
 				type: 'DELETE',
-				url: "http://localhost/superhero/api/applications/" + applicationsid,
+				url: "http://localhost/superhero/api/admin/" + applicationsid,
 				dataType: "json",
 				success: function(data){
 					if (data.deletestatus) {
@@ -406,7 +411,7 @@ $(function(){
 
 	
 
-
+	
 
 	
 });

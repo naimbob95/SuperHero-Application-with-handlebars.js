@@ -494,6 +494,8 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
+//admin
+
 $app->get('/admin', function($request, $response){
 
    $ownerlogin = getLoginTokenPayload($request, $response); 
@@ -537,101 +539,24 @@ $app->put('/admin/[{id}]', function($request, $response, $args){
                    ->withHeader('Content-type', 'application/json');
 });
 
+$app->delete('/admin/[{id}]', function($request, $response, $args){
 
-   /////////////////////////////////////////////////////////////////////// <------------sini contact
-   // $app->post('/contacts', function($request, $response){
+   $id = $args['id'];
 
-   //    $ownerlogin = getLoginTokenPayload($request, $response);  
-      
-   //    //form data
-   //    $json = json_decode($request->getBody());
-   //    $name = $json->name;
-   //    $email = $json->email;
-   //    $mobileno = $json->mobileno;
+   $db = getDatabase();
+   $dbs = $db->deleteApplicationViaId($id);
+   $db->close();
 
-   //    $db = getDatabase();
-   //    $dbs = $db->insertContact($name, $email, $mobileno, $ownerlogin);
-   //    $db->close();
+   $data = Array(
+      "deletestatus" => $dbs->status,
+      "error" => $dbs->error
+   );
 
-   //    $data = array(
-   //       "insertstatus" => $dbs->status,
-   //       "error" => $dbs->error
-   //    ); 
-
-   //    return $response->withJson($data, 200)
-   //                    ->withHeader('Content-type', 'application/json'); 
-   // }); 
+   return $response->withJson($data, 200)
+                   ->withHeader('Content-type', 'application/json');     
+});
 
 
-   //GET - ALL CONTACTS
-   // $app->get('/contacts', function($request, $response){
-
-   //    $ownerlogin = getLoginTokenPayload($request, $response);  
-
-   //    $db = getDatabase();
-   //    $data = $db->getAllContactsViaLogin($ownerlogin);
-   //    $db->close();
-
-   //    return $response->withJson($data, 200)
-   //                    ->withHeader('Content-type', 'application/json');
-   // });
-
-   // //GET - SINGLE CONTACT VIA ID
-   // $app->get('/contacts/[{id}]', function($request, $response, $args){
-
-   //    //get owner login - to prevent rolling no hacking
-   //    $ownerlogin = getLoginTokenPayload($request, $response);  
-      
-   //    $id = $args['id'];
-
-   //    $db = getDatabase();
-   //    $data = $db->getContactViaId($id, $ownerlogin);
-   //    $db->close();
-
-   //    return $response->withJson($data, 200)
-   //                    ->withHeader('Content-type', 'application/json'); 
-   // }); 
-
-   //PUT - UPDATE SINGLE CONTACT VIA ID
-   // $app->put('/contacts/[{id}]', function($request, $response, $args){
-     
-   //    $id = $args['id'];
-
-   //    //form data
-   //    $json = json_decode($request->getBody());
-   //    $name = $json->name;
-   //    $email = $json->email;
-   //    $mobileno = $json->mobileno;
-
-   //    $db = getDatabase();
-   //    $dbs = $db->updateContactViaId($id, $name, $email, $mobileno);
-   //    $db->close();
-
-   //    $data = Array(
-   //       "updatestatus" => $dbs->status,
-   //       "error" => $dbs->error
-   //    );
-
-   //    return $response->withJson($data, 200)
-   //                    ->withHeader('Content-type', 'application/json');
-   // });
-
-   //DELETE - SINGLE CONTACT VIA ID
-   // $app->delete('/contacts/[{id}]', function($request, $response, $args){
-
-   //    $id = $args['id'];
-
-   //    $db = getDatabase();
-   //    $dbs = $db->deleteContactViaId($id);
-   //    $db->close();
-
-   //    $data = Array(
-   //       "deletestatus" => $dbs->status,
-   //       "error" => $dbs->error
-   //    );
-
-   //    return $response->withJson($data, 200)
-   //                    ->withHeader('Content-type', 'application/json');     
-   // });
+ ///////////////////////////////////////////////////////////////////////////
 
    $app->run();
