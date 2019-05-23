@@ -437,7 +437,7 @@
       $id = $args['id'];
 
       $db = getDatabase();
-      $data = $db->getOwnerApplication($id, $ownerlogin);
+      $data = $db->getOwnerViaId($id, $ownerlogin);
       $db->close();
 
       return $response->withJson($data, 200)
@@ -477,7 +477,7 @@
    $superpower = $json->superpower;
 
    $db = getDatabase();
-   $dbs = $db->updateContactViaId($id, $name, $cape, $mask, $superpower);
+   $dbs = $db->updateApplicationViaId($id, $name, $cape, $mask, $costume, $superpower);
    $db->close();
 
    $data = Array(

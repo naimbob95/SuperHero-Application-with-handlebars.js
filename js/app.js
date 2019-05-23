@@ -17,6 +17,7 @@ $(function(){
          return "<span style='color: green; font-weight: bold'>approve</span>";
 	});	  
 
+	
 
 	// Handlebars.registerHelper("roleschecker", function(roles) {
 	// 	var roles = sessionStorage.roles;
@@ -111,6 +112,7 @@ $(function(){
 					var applicationsViewFormTemplate = Handlebars.templates['applicationviewform']({
 						id: id,
 						name: data.name,
+						cape: data.cape,
 						superpower: data.superpower
 					});
 				  $('#divcontent').empty();
@@ -118,8 +120,8 @@ $(function(){
 	  
 				  $(".breadcrumb").empty();
 				  $(".breadcrumb").append("<li><a href='#home'>Home</a></li>");
-				  $(".breadcrumb").append("<li><a href='#contacts'>Contacts</a></li>")
-				  $(".breadcrumb").append("<li class='active'>View Contact</li>");
+				  $(".breadcrumb").append("<li><a href='#applications'>Applications</a></li>")
+				  $(".breadcrumb").append("<li class='active'>View Application</li>");
 	  
 					$("#navbar li").removeClass('active');
 					$("#navbar li a[href='#applications']").parent().addClass('active');	  					   
@@ -137,7 +139,7 @@ $(function(){
   
 	   $(".breadcrumb").empty();
 	   $(".breadcrumb").append("<li><a href='#home'>Home</a></li>");
-	  //  $(".breadcrumb").append("<li><a href='#contacts'>Contacts</a></li>")
+	   $(".breadcrumb").append("<li><a href='#applications'>Applications</a></li>")
 	   $(".breadcrumb").append("<li class='active'>Add Application</li>");
   
 		  $("#navbar li").removeClass('active');
@@ -295,6 +297,7 @@ $(function(){
 		e.preventDefault();
 		e.stopPropagation();
 
+		var applicationid = $("#applicationid").val();
 		var name = $("#name").val();
 		var cape = $("input[name='cape']:checked").val();
 		var mask = $("input[name='mask']:checked").val();
@@ -313,7 +316,7 @@ $(function(){
 
       $.ajax({
          type: "PUT",
-         url: "http://localhost/superhero/api/application/" + applicationid,
+         url: "http://localhost/superhero/api/applications/" + applicationid,
          dataType: "json",
          data: JSON.stringify(obj), 
          success: function(data){   

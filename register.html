@@ -31,6 +31,7 @@
 </head>
 <body style="background-color: #999999;">
 	
+		<div class="animsition">
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="login100-more" style="background-image: url('images/hydra.jpg');"></div>
@@ -83,7 +84,7 @@
 							</button>
 						</div>
 
-						<a href="login.html" class="dis-block txt3 hov1 p-r-30 p-t-10 p-b-10 p-l-30">
+						<a href="login.html" class="animsition-link" class="dis-block txt3 hov1 p-r-30 p-t-10 p-b-10 p-l-30">
 							Sign in
 							<i class="fa fa-long-arrow-right m-l-5"></i>
 						</a>
@@ -91,6 +92,7 @@
 				</form>
 			</div>
 		</div>
+	</div>
 	</div>
   
   <script src="js/jquery-3.2.1.min.js"></script>
@@ -100,6 +102,24 @@
 
 <!--===============================================================================================-->
 	<script src="vendor/animsition/js/animsition.min.js"></script>
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+	
+	<script>
+			$(document).ready(function() {
+				$('.animsition').animsition({
+					inClass:'zoom-in-sm',
+					outClass:'zoom-out-sm'
+				})
+				.one('animsition.inStart',function(){
+					$(this).append('<h2 class="target">Callback: Start</h2>');
+					console.log('event -> inStart');
+				})
+				.one('animsition.inEnd',function(){
+					$('.target', this).html('Callback: End');
+					console.log('event -> inEnd');
+				});
+			});
+			</script>
 <!--===============================================================================================-->
 	<script src="vendor/bootstrap/js/popper.js"></script>
 

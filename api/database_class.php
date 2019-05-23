@@ -358,7 +358,7 @@
 
       function getOwnerViaId($id, $ownerlogin) {
          $sql = "SELECT *
-                 FROM contacts
+                 FROM applications
                  WHERE id = :id
                  AND ownerlogin = :ownerlogin";
 
@@ -368,28 +368,24 @@
          $stmt->execute(); 
          $row_count = $stmt->rowCount();
 
-         $contact = new Contact();
+         $application = new Application();
 
          if ($row_count)
          {
             while($row = $stmt->fetch(PDO::FETCH_ASSOC))
             {               
-               $contact->id = $row['id'];
-               $contact->name = $row['name'];
-               $contact->email = $row['email'];
-               $contact->mobileno = $row['mobileno'];
-               $contact->photo = $row['photo'];
-
-               $addeddate = $row['addeddate'];
-               $contact->addeddate = time_elapsed_string($addeddate);  
+               $application->id = $row['id'];
+               $application->name = $row['name'];
+               $application->cape = $row['cape'];
+               $application->superpower = $row['superpower'];
             }
          }
 
-         return $contact;
+         return $application;
       }
 
  //update contact via id
- function updateApplicationViaId($name, $cape, $mask, $costume, $superpower) {
+ function updateApplicationViaId($id,$name, $cape, $mask, $costume, $superpower) {
 
    $sql = "UPDATE applications
            SET name = :name,
@@ -402,6 +398,7 @@
    try {
       $stmt = $this->db->prepare($sql);  
       $stmt->bindParam("id", $id);
+      $stmt->bindParam("name", $name);
       $stmt->bindParam("cape", $cape);
       $stmt->bindParam("mask", $mask);
       $stmt->bindParam("costume",$costume);

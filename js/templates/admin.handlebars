@@ -21,7 +21,7 @@
 {{#each applications}}
             <tr>
                <td class='index-column'>{{ id }}</td>
-               <td><a href="#applications/view/{{id}}">{{name}}</a></td>
+               <td>{{name}}</td>
                <td>{{cape}}</td>
                <td>{{mask}}</td>
                <td>{{costume}}</td>
@@ -29,7 +29,8 @@
                <td><span class="label label-info">{{ addeddate }}</span></td>
            <td>{{{displayverify verify}}}
                 <a href="javascript:;">
-                  <i class="fa fa-times" aria-hidden="true"  data-verifyid="{{ id }}"></i>
+                  <i class="fa fa-check fa2" aria-hidden="true"  data-verifyid="{{ id }}"></i>
+         
            </td>
 
 
