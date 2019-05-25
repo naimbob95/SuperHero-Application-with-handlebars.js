@@ -6,7 +6,6 @@ $(function(){
   		$("body").show();
 		  $("#login").html(sessionStorage.login);
 		  $("#roles").html(sessionStorage.roles);
-		  
 	   }
 	  
 	   Handlebars.registerHelper("displayverify", function(verify) {
@@ -17,6 +16,13 @@ $(function(){
          return "<span style='color: green; font-weight: bold'>approve</span>";
 	});	  
 
+	Handlebars.registerHelper("displayverifyuser", function(verify) {
+		var thestats = (verify);
+		if (thestats === 0)        
+		return "<span style='color: red; font-weight: bold'>disapprove</span>";
+      else if (thestats === 1)        
+         return "<span style='color: green; font-weight: bold'>approve</span>";
+	});	  
 	
 
 	// Handlebars.registerHelper("roleschecker", function(roles) {
@@ -335,12 +341,9 @@ $(function(){
 	});	
 
 
-
-	
-
 	$(document).on("click", "#tbl1 tbody i", function() {
 		//             span    a        td       tr  
-	  var parentTR = $(this).parent().parent().parent();
+	//   var parentTR = $(this).parent().parent().parent();
 	  var verifyid = $(this).data("verifyid");
 	  var verify = 1;
 
@@ -380,10 +383,10 @@ $(function(){
 
 
 
-	$(document).on("click", "#tbl2 tbody i", function() {
+	$(document).on("click", "#tbl1 tbody span", function() {
 		//             span    a        td       tr  
 	  var parentTR = $(this).parent().parent().parent();
-	  var applicationsid = $(this).data("applicationid");
+	  var applicationid = $(this).data("applicationid");
 
 	  
 	 bootbox.confirm("Are you sure you want to delete the application?", function(answer) {
@@ -391,7 +394,7 @@ $(function(){
 
 			  $.ajax({
 				type: 'DELETE',
-				url: "http://localhost/superhero/api/admin/" + applicationsid,
+				url: "http://localhost/superhero/api/admin/" + applicationid,
 				dataType: "json",
 				success: function(data){
 					if (data.deletestatus) {
@@ -408,10 +411,5 @@ $(function(){
 	  });   
 	  //*/	
 	});
-
-	
-
-	
-
 	
 });
